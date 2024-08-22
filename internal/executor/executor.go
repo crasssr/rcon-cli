@@ -11,8 +11,8 @@ import (
 	"strings"
 
 	"github.com/gorcon/rcon"
-	"github.com/gorcon/rcon-cli/internal/config"
-	"github.com/gorcon/rcon-cli/internal/logger"
+	"github.com/crasssr/rcon-cli/internal/config"
+	"github.com/crasssr/rcon-cli/internal/logger"
 	"github.com/gorcon/telnet"
 	"github.com/gorcon/websocket"
 	"github.com/urfave/cli/v2"
