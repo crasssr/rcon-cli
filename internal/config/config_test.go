@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gorcon/rcon-cli/internal/config"
+	"github.com/crasssr/rcon-cli/internal/config"
 	"github.com/stretchr/testify/assert"
 )
 
