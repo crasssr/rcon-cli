@@ -55,6 +55,65 @@ type Executor struct {
 	client ExecuteCloser
 }
 
+// Apply or remove color codes text
+func processColorCodes(text string, stripColors bool) string {
+    // Map of Minecraft color codes to ANSI escape codes.
+    colorMap := map[rune]string{
+        '0': "\033[30m", // Black
+        '1': "\033[34m", // Dark Blue
+        '2': "\033[32m", // Dark Green
+        '3': "\033[36m", // Dark Aqua
+        '4': "\033[31m", // Dark Red
+        '5': "\033[35m", // Dark Purple
+        '6': "\033[33m", // Gold
+        '7': "\033[37m", // Gray
+        '8': "\033[90m", // Dark Gray
+        '9': "\033[94m", // Blue
+        'a': "\033[92m", // Green
+        'b': "\033[96m", // Aqua
+        'c': "\033[91m", // Red
+        'd': "\033[95m", // Light Purple
+        'e': "\033[93m", // Yellow
+        'f': "\033[97m", // White
+        'r': "\033[0m",  // Reset
+        // Add more as needed
+    }
+	
+	if stripColors {
+        // Remove color codes by stripping § and following character.
+        return strings.Map(func(r rune) rune {
+            if r == '§' {
+                return -1
+            }
+            return r
+        }, text)
+    } else {
+        // Apply ANSI color codes.
+        var result strings.Builder
+        skip := false
+
+        for i, r := range text {
+            if skip {
+                skip = false
+                continue
+            }
+            if r == '§' && i+1 < len(text) {
+                color, ok := colorMap[rune(text[i+1])]
+                if ok {
+                    result.WriteString(color)
+                    skip = true
+                    continue
+                }
+            }
+            result.WriteRune(r)
+        }
+
+        // Ensure reset at the end.
+        result.WriteString("\033[0m")
+        return result.String()
+    }
+}
+
 // NewExecutor creates a new Executor.
 func NewExecutor(r io.Reader, w io.Writer, version string) *Executor {
 	return &Executor{
@@ -358,6 +417,11 @@ func (executor *Executor) execute(w io.Writer, ses *config.Session, command stri
 	result, err = executor.client.Execute(command)
 	if result != "" {
 		result = strings.TrimSpace(result)
+
+		// Minecraft code here
+		stripColors := false // Set this based on your needs or configuration
+		result = processColorCodes(result, stripColors)
+		
 		_, _ = fmt.Fprintln(w, result)
 	}
 
