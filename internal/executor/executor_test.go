@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/gorcon/rcon"
-	"github.com/gorcon/rcon-cli/internal/config"
-	"github.com/gorcon/rcon-cli/internal/executor"
+	"github.com/crasssr/rcon-cli/internal/config"
+	"github.com/crasssr/rcon-cli/internal/executor"
 	"github.com/gorcon/rcon/rcontest"
 	"github.com/gorcon/telnet"
 	"github.com/gorcon/telnet/telnettest"
