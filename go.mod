@@ -1,4 +1,4 @@
-module github.com/gorcon/rcon-cli
+module github.com/crasssr/rcon-cli
 
 go 1.21
 
